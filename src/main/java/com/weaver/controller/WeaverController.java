@@ -27,7 +27,6 @@ public class WeaverController {
     private void initializeController() {
         // Set the submit button event
         view.getSubmitButton().setOnAction(e -> handleSubmit());
-
         // Set the reset button event
         view.getResetButton().setOnAction(e -> handleReset());
 
@@ -64,7 +63,6 @@ public class WeaverController {
                 key.setOnAction(e -> handleKeyPress(key.getText()));
             }
         }
-
         // The update view shows the initial state
         updateView();
     }
@@ -167,7 +165,9 @@ public class WeaverController {
     private void updateView() {
         view.clearHistory();
         var history = model.getGameHistory();
+        String startWord = model.getStartWord();
         String targetWord = model.getTargetWord();
+        view.updateWords(startWord, targetWord);
 
         for (String word : history) {
             boolean[] correctPositions = new boolean[word.length()];

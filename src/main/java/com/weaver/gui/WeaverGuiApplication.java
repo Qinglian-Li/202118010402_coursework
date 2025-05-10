@@ -19,16 +19,7 @@ public class WeaverGuiApplication extends Application {
         
         // Create View
         WeaverView view = new WeaverView();
-        
-        // Create Controller
-        WeaverController controller = new WeaverController(model, view);
-        
-        // Set Scene
-        Scene scene = new Scene(view.getRoot(), 800, 600);
-        primaryStage.setTitle("Weaver Game");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        
+
         // Initializing the game
         if (model.isUseRandomWords()) {
             String startWord = model.getRandomWord(4);
@@ -37,6 +28,15 @@ public class WeaverGuiApplication extends Application {
         } else {
             model.initializeGame("SOUL", "MATE");
         }
+
+        // Create Controller
+        WeaverController controller = new WeaverController(model, view);
+        
+        // Set Scene
+        Scene scene = new Scene(view.getRoot(), 800, 600);
+        primaryStage.setTitle("Weaver Game");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     public static void main(String[] args) {

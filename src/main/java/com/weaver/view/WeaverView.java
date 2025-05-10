@@ -32,6 +32,8 @@ public class WeaverView implements GameView {
     private ListView<String> historyList;
     private Label timerLabel;
     private Label scoreLabel;
+    private Label startWordLabel;
+    private Label targetWordLabel;
 
     public WeaverView() {
         initialize();
@@ -62,10 +64,12 @@ public class WeaverView implements GameView {
         // Word display area
         VBox wordBox = new VBox(10);
         wordBox.setAlignment(Pos.CENTER);
+        startWordLabel = new Label("START");
+        targetWordLabel = new Label("TARGET");
         wordBox.getStyleClass().add("word-display");
-        Text startWord = new Text("START");
-        Text targetWord = new Text("TARGET");
-        wordBox.getChildren().addAll(startWord, new Text("↓"), targetWord);
+        /*Text startWord = new Text("START");
+        Text targetWord = new Text("TARGET");*/
+        wordBox.getChildren().addAll(startWordLabel, new Text("↓"), targetWordLabel);
 
         // Input area
         inputField = new TextField();
@@ -348,4 +352,11 @@ public class WeaverView implements GameView {
     public void updateScore(int score) {
         scoreLabel.setText("Score: " + score);
     }
+
+    public void updateWords(String startWord, String targetWord) {
+        startWordLabel.setText(startWord);
+        targetWordLabel.setText(targetWord);
+    }
+
+
 } 
