@@ -70,7 +70,7 @@ public class WeaverView implements GameView {
         // Input area
         inputField = new TextField();
         inputField.getStyleClass().add("input-field");
-        inputField.setPromptText("Enter your words...");
+        inputField.setPromptText("Enter your word...");
         inputField.setMaxWidth(300);
 
         // History list
@@ -242,7 +242,7 @@ public class WeaverView implements GameView {
 
     @Override
     public void showError(String message) {
-        messageLabel.getStyleClass().setAll("error-message");
+        messageLabel.getStyleClass().setAll("Error-message");
         messageLabel.setText(message);
         shakeNode(messageLabel);
     }
