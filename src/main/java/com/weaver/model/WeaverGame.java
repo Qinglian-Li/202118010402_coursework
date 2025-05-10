@@ -10,7 +10,7 @@ import java.util.*;
  * WeaverGame class is the core model class of the game
  * and implements the main logic of the word change game
  */
-public class WeaverGame {
+public class WeaverGame extends Observable {
     private String startWord;
     private String targetWord;
     private Set<String> dictionary;
@@ -19,16 +19,25 @@ public class WeaverGame {
     private boolean showPath;
     private boolean useRandomWords;
 
+    public enum GameEvent {
+        GAME_INITIALIZED,
+        WORD_ACCEPTED,
+        INVALID_LENGTH,
+        INVALID_DIFFERENCE,
+        NOT_IN_DICTIONARY,
+        GAME_WON
+    }
+
     /**
      * Constructors
      * @param dictionaryPath Path to the dictionary file
      */
     public WeaverGame(String dictionaryPath) {
         assert dictionaryPath != null && !dictionaryPath.isEmpty() : "Dictionary file path cannot be empty";
-        
+
         this.dictionary = loadDictionary(dictionaryPath);
         assert !dictionary.isEmpty() : "Dictionary cannot be empty";
-        
+
         this.gameHistory = new ArrayList<>();
         this.showErrorMessage = true;
         this.showPath = false;
@@ -68,8 +77,10 @@ public class WeaverGame {
 
         this.startWord = start.toLowerCase();
         this.targetWord = target.toLowerCase();
-        this.gameHistory.clear();
-        this.gameHistory.add(this.startWord);
+        gameHistory.clear();
+        gameHistory.add(startWord);
+        setChanged();
+        notifyObservers(GameEvent.GAME_INITIALIZED);
     }
 
     /**
@@ -80,34 +91,49 @@ public class WeaverGame {
     public boolean tryWord(String word) {
         assert word != null : "The input word cannot be empty";
         assert !gameHistory.isEmpty() : "The game history cannot be empty";
-        
+
         word = word.toLowerCase();
-        
+
+        String current = getCurrentWord();
         // Check that the word length is correct
-        if (word.length() != startWord.length()) {
+        if (word.length() != current.length()) {
+            setChanged();
+            notifyObservers(GameEvent.INVALID_LENGTH);
             return false;
         }
 
         // Check if only one letter has changed
-        String lastWord = gameHistory.get(gameHistory.size() - 1);
-        int differences = 0;
-        for (int i = 0; i < word.length(); i++) {
-            if (word.charAt(i) != lastWord.charAt(i)) {
-                differences++;
-            }
-        }
-        if (differences != 1) {
+        if (calculateDifference(current, word) != 1) {
+            setChanged();
+            notifyObservers(GameEvent.INVALID_DIFFERENCE);
             return false;
         }
 
         // Checks if it's a valid word
         if (!dictionary.contains(word)) {
+            setChanged();
+            notifyObservers(GameEvent.NOT_IN_DICTIONARY);
             return false;
         }
 
         // Add to history
         gameHistory.add(word);
+        setChanged();
+        notifyObservers(GameEvent.WORD_ACCEPTED);
+
+        if (hasWon()) {
+            setChanged();
+            notifyObservers(GameEvent.GAME_WON);
+        }
         return true;
+    }
+
+    private int calculateDifference(String a, String b) {
+        int diff = 0;
+        for (int i = 0; i < a.length(); i++) {
+            if (a.charAt(i) != b.charAt(i)) diff++;
+        }
+        return diff;
     }
 
     /**
@@ -131,9 +157,9 @@ public class WeaverGame {
         List<String> wordsOfLength = dictionary.stream()
                 .filter(word -> word.length() == length)
                 .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
-        
+
         assert !wordsOfLength.isEmpty() : "No word of the specified length was found";
-        
+
         Random random = new Random();
         return wordsOfLength.get(random.nextInt(wordsOfLength.size()));
     }
@@ -152,6 +178,10 @@ public class WeaverGame {
     public List<String> getGameHistory() {
         assert gameHistory != null : "Game history is uninitialized";
         return new ArrayList<>(gameHistory);
+    }
+
+    public String getCurrentWord() {
+        return gameHistory.get(gameHistory.size() - 1);
     }
 
     public boolean isShowErrorMessage() {
@@ -177,4 +207,4 @@ public class WeaverGame {
     public void setUseRandomWords(boolean useRandomWords) {
         this.useRandomWords = useRandomWords;
     }
-} 
+}
