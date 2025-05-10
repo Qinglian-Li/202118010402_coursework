@@ -19,8 +19,9 @@ This is a word transformation game implemented based on Java, including two vers
 
 ## System Requirements
 
-- Java 21
-- Maven >= 3.6
+- Java 17
+- JavaFX 17.0.15
+- Maven 3.6.3
 
 ## How to operate
 
