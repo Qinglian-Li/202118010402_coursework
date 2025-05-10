@@ -25,7 +25,8 @@ public class WeaverGame extends Observable {
         INVALID_LENGTH,
         INVALID_DIFFERENCE,
         NOT_IN_DICTIONARY,
-        GAME_WON
+        GAME_WON,
+        SETTINGS_CHANGED // 新增设置变更事件
     }
 
     /**
@@ -198,6 +199,8 @@ public class WeaverGame extends Observable {
 
     public void setShowPath(boolean showPath) {
         this.showPath = showPath;
+        setChanged();
+        notifyObservers(GameEvent.SETTINGS_CHANGED);
     }
 
     public boolean isUseRandomWords() {
