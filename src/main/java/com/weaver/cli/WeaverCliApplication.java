@@ -4,7 +4,7 @@ import com.weaver.model.WeaverGame;
 import java.util.Scanner;
 
 /**
- * 命令行版本的主应用程序类
+ * The command-line version of the main application class
  */
 public class WeaverCliApplication {
     private final WeaverGame game;
@@ -16,10 +16,10 @@ public class WeaverCliApplication {
     }
 
     /**
-     * 运行游戏
+     * Running the game
      */
     public void run() {
-        System.out.println("欢迎来到 Weaver 游戏！");
+        System.out.println("Welcome to Weaver Game！");
         
         // 初始化游戏
         if (game.isUseRandomWords()) {
@@ -30,12 +30,12 @@ public class WeaverCliApplication {
             game.initializeGame("SOUL", "MATE");
         }
 
-        // 显示初始状态
+        // Display the initial state
         displayGameState();
 
-        // 主游戏循环
+        // Main game loop
         while (true) {
-            System.out.print("请输入一个4字母的单词（或输入'quit'退出）：");
+            System.out.print("Please enter a 4 - letter word (or type 'QUIT' to quit): ");
             String input = scanner.nextLine().trim().toUpperCase();
 
             if (input.equals("QUIT")) {
@@ -43,18 +43,18 @@ public class WeaverCliApplication {
             }
 
             if (input.length() != 4) {
-                System.out.println("请输入4个字母的单词！");
+                System.out.println("Please enter a 4 - letter word");
                 continue;
             }
 
             if (game.tryWord(input)) {
                 displayGameState();
                 if (game.hasWon()) {
-                    System.out.println("恭喜你赢了！");
+                    System.out.println("Congratulations on winning!");
                     break;
                 }
             } else if (game.isShowErrorMessage()) {
-                System.out.println("无效的单词！");
+                System.out.println("Invalid word!");
             }
         }
 
@@ -62,13 +62,13 @@ public class WeaverCliApplication {
     }
 
     /**
-     * 显示游戏状态
+     * Displaying game status
      */
     private void displayGameState() {
-        System.out.println("\n当前游戏状态：");
-        System.out.println("起始单词：" + game.getStartWord());
-        System.out.println("目标单词：" + game.getTargetWord());
-        System.out.println("历史记录：");
+        System.out.println("\nCurrent Game State：");
+        System.out.println("Start Word: " + game.getStartWord());
+        System.out.println("Target Word: " + game.getTargetWord());
+        System.out.println("History Record: ");
 
         var history = game.getGameHistory();
         String targetWord = game.getTargetWord();
@@ -77,9 +77,9 @@ public class WeaverCliApplication {
             StringBuilder display = new StringBuilder();
             for (int i = 0; i < word.length(); i++) {
                 if (word.charAt(i) == targetWord.charAt(i)) {
-                    display.append("\u001B[32m").append(word.charAt(i)).append("\u001B[0m"); // 绿色
+                    display.append("\u001B[32m").append(word.charAt(i)).append("\u001B[0m"); // Green
                 } else {
-                    display.append("\u001B[37m").append(word.charAt(i)).append("\u001B[0m"); // 灰色
+                    display.append("\u001B[37m").append(word.charAt(i)).append("\u001B[0m"); // Grey
                 }
             }
             System.out.println(display);

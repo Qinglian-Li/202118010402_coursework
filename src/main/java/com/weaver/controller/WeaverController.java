@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 
 /**
- * 游戏的控制器类，负责处理用户输入和更新视图
+ * The game's controller class, which handles user input and updates the view
  */
 public class WeaverController {
     private final WeaverGame model;
@@ -22,19 +22,19 @@ public class WeaverController {
     }
 
     /**
-     * 初始化控制器，设置事件处理
+     * Initialize the controller and set up event handling
      */
     private void initializeController() {
-        // 设置提交按钮事件
+        // Set the submit button event
         view.getSubmitButton().setOnAction(e -> handleSubmit());
 
-        // 设置重置按钮事件
+        // Set the reset button event
         view.getResetButton().setOnAction(e -> handleReset());
 
-        // 设置新游戏按钮事件
+        // Set a new game button event
         view.getNewGameButton().setOnAction(e -> handleNewGame());
 
-        // 设置标志控制
+        // Setting flag controls
         view.getShowErrorMessageCheckBox().setSelected(model.isShowErrorMessage());
         view.getShowPathCheckBox().setSelected(model.isShowPath());
         view.getUseRandomWordsCheckBox().setSelected(model.isUseRandomWords());
@@ -44,20 +44,20 @@ public class WeaverController {
         
         view.getShowPathCheckBox().setOnAction(e -> {
             model.setShowPath(view.getShowPathCheckBox().isSelected());
-            updateView(); // 更新显示以反映路径显示状态
+            updateView(); // Update the display to reflect the path display state
         });
         
         view.getUseRandomWordsCheckBox().setOnAction(e -> 
             model.setUseRandomWords(view.getUseRandomWordsCheckBox().isSelected()));
 
-        // 设置输入框事件
+        // Sets the input field event
         view.getInputField().setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) {
                 handleSubmit();
             }
         });
 
-        // 设置虚拟键盘事件
+        // Set virtual keyboard events
         for (var node : view.getKeyboard().getChildren()) {
             if (node instanceof Button) {
                 Button key = (Button) node;
@@ -65,12 +65,12 @@ public class WeaverController {
             }
         }
 
-        // 更新视图显示初始状态
+        // The update view shows the initial state
         updateView();
     }
 
     /**
-     * 处理虚拟键盘按键
+     * Handle virtual keyboard keystrokes
      */
     private void handleKeyPress(String key) {
         switch (key) {
@@ -93,12 +93,12 @@ public class WeaverController {
     }
 
     /**
-     * 处理提交操作
+     * Handling commit operations
      */
     private void handleSubmit() {
         String input = view.getInputField().getText().toUpperCase();
         if (input.length() != 4) {
-            view.showMessage("请输入4个字母的单词");
+            view.showMessage("Please enter a 4 - letter word");
             return;
         }
 
@@ -108,15 +108,15 @@ public class WeaverController {
                 view.showSuccess();
                 view.getSubmitButton().setDisable(true);
                 
-                // 显示更详细的胜利对话框
+                // Displays a more detailed victory dialog
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("游戏胜利");
-                alert.setHeaderText("恭喜你完成了挑战！");
+                alert.setTitle("Game Winning");
+                alert.setHeaderText("Congratulations on completing the challenge!");
                 alert.setContentText(
-                    String.format("你成功将 %s 转换成了 %s！\n\n" +
-                                "游戏统计：\n" +
-                                "- 使用步数：%d\n" +
-                                "- 转换路径：%s",
+                    String.format("You successfully converted %s to %s！\n\n" +
+                                "Game Statistics: \n" +
+                                "- Steps Number: %d\n" +
+                                "- Transition Path: %s",
                                 model.getStartWord().toUpperCase(),
                                 model.getTargetWord().toUpperCase(),
                                 model.getGameHistory().size() - 1,
@@ -126,7 +126,7 @@ public class WeaverController {
                 alert.showAndWait();
             }
         } else if (model.isShowErrorMessage()) {
-            view.showMessage("无效的单词");
+            view.showMessage("Invalid word!");
         }
 
         view.getInputField().clear();
@@ -134,7 +134,7 @@ public class WeaverController {
     }
 
     /**
-     * 处理重置操作
+     * Handling reset operations
      */
     private void handleReset() {
         model.initializeGame(model.getStartWord(), model.getTargetWord());
@@ -145,7 +145,7 @@ public class WeaverController {
     }
 
     /**
-     * 处理新游戏操作
+     * Handle new game actions
      */
     private void handleNewGame() {
         if (model.isUseRandomWords()) {
@@ -162,7 +162,7 @@ public class WeaverController {
     }
 
     /**
-     * 更新视图显示
+     * Update the view display
      */
     private void updateView() {
         view.clearHistory();
@@ -177,13 +177,13 @@ public class WeaverController {
             view.addWordToHistory(word, correctPositions);
         }
 
-        // 如果启用了路径显示，显示当前路径
+        // If path display is enabled, display the current path
         if (model.isShowPath() && !history.isEmpty()) {
-            StringBuilder pathMessage = new StringBuilder("当前路径: ");
+            StringBuilder pathMessage = new StringBuilder("Current path: ");
             for (String word : history) {
                 pathMessage.append(word).append(" -> ");
             }
-            pathMessage.setLength(pathMessage.length() - 4); // 移除最后的 " -> "
+            pathMessage.setLength(pathMessage.length() - 4); // Remove the last " -> "
             view.showMessage(pathMessage.toString());
         }
     }

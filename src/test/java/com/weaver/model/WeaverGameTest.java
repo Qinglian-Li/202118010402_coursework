@@ -16,10 +16,10 @@ public class WeaverGameTest {
     }
 
     @Nested
-    @DisplayName("游戏初始化测试")
+    @DisplayName("Game Initialization Test")
     class InitializationTests {
         @Test
-        @DisplayName("测试正常游戏初始化")
+        @DisplayName("Normal Game Initialization Test")
         void testNormalInitialization() {
             game.initializeGame("able", "ably");
             assertEquals("able", game.getStartWord());
@@ -29,7 +29,7 @@ public class WeaverGameTest {
         }
 
         @Test
-        @DisplayName("测试初始化时的断言 - 不同长度的单词")
+        @DisplayName("Test assertions at initialization -words of different lengths")
         void testInitializationAssertionDifferentLength() {
             assertThrows(AssertionError.class, () -> 
                 game.initializeGame("able", "ables")
@@ -37,7 +37,7 @@ public class WeaverGameTest {
         }
 
         @Test
-        @DisplayName("测试初始化时的断言 - 空单词")
+        @DisplayName("Test assertions at initialization -empty word")
         void testInitializationAssertionNullWords() {
             assertThrows(AssertionError.class, () -> 
                 game.initializeGame(null, "ably")
@@ -49,7 +49,7 @@ public class WeaverGameTest {
     }
 
     @Nested
-    @DisplayName("单词尝试测试")
+    @DisplayName("Word Trial Test")
     class WordTryTests {
         @BeforeEach
         void initializeGameForTests() {
@@ -57,7 +57,7 @@ public class WeaverGameTest {
         }
 
         @Test
-        @DisplayName("测试有效的单词尝试")
+        @DisplayName("Test for effective word attempts")
         void testValidWordTry() {
             assertTrue(game.tryWord("ably"));
             assertEquals(2, game.getGameHistory().size());
@@ -65,25 +65,25 @@ public class WeaverGameTest {
         }
 
         @Test
-        @DisplayName("测试无效的单词尝试 - 多个字母改变")
+        @DisplayName("Test invalid word attempts - multiple letter changes")
         void testInvalidWordTryMultipleChanges() {
             assertFalse(game.tryWord("aces"));
         }
 
         @Test
-        @DisplayName("测试无效的单词尝试 - 长度不匹配")
+        @DisplayName("Test for invalid word trial-length mismatches")
         void testInvalidWordTryWrongLength() {
             assertFalse(game.tryWord("ables"));
         }
 
         @Test
-        @DisplayName("测试无效的单词尝试 - 不在字典中的单词")
+        @DisplayName("Test for invalid word attempts -words that are not in the dictionary")
         void testInvalidWordTryNotInDictionary() {
             assertFalse(game.tryWord("abxx"));
         }
 
         @Test
-        @DisplayName("测试无效的单词尝试 - 空单词")
+        @DisplayName("Test for invalid word tries-empty words")
         void testInvalidWordTryNull() {
             assertThrows(AssertionError.class, () -> 
                 game.tryWord(null)
@@ -91,7 +91,7 @@ public class WeaverGameTest {
         }
 
         @Test
-        @DisplayName("测试重复单词尝试")
+        @DisplayName("Test Duplicate Word Attempts")
         void testDuplicateWordTry() {
             assertTrue(game.tryWord("ably"));
             assertFalse(game.tryWord("ably"));
@@ -99,10 +99,10 @@ public class WeaverGameTest {
     }
 
     @Nested
-    @DisplayName("游戏状态测试")
+    @DisplayName("Game State Test")
     class GameStateTests {
         @Test
-        @DisplayName("测试游戏胜利条件")
+        @DisplayName("Test the game win condition")
         void testWinCondition() {
             game.initializeGame("able", "ably");
             assertFalse(game.hasWon());
@@ -111,7 +111,7 @@ public class WeaverGameTest {
         }
 
         @Test
-        @DisplayName("测试游戏历史记录")
+        @DisplayName("Game History Test")
         void testGameHistory() {
             game.initializeGame("able", "ably");
             game.tryWord("ably");
@@ -123,23 +123,23 @@ public class WeaverGameTest {
     }
 
     @Nested
-    @DisplayName("随机单词生成测试")
+    @DisplayName("Random Word Generation Test")
     class RandomWordTests {
         @Test
-        @DisplayName("测试4字母单词生成")
+        @DisplayName("Test 4-letter word generation")
         void testRandomWordGeneration() {
             String randomWord = game.getRandomWord(4);
             assertNotNull(randomWord);
             assertEquals(4, randomWord.length());
             assertTrue(randomWord.matches("[a-z]+"));
             
-            // 初始化一个新游戏，使用生成的单词作为起始词
-            // 如果初始化成功，说明这个单词在字典中
+            // Initialize a new game, using the generated word as the starting word
+            // If initialization was successful, then the word is in the dictionary
             assertDoesNotThrow(() -> game.initializeGame(randomWord, "able"));
         }
 
         @Test
-        @DisplayName("测试随机单词生成的断言 - 无效长度")
+        @DisplayName("Test random word generation for assertion-invalid length")
         void testRandomWordGenerationInvalidLength() {
             assertThrows(AssertionError.class, () -> 
                 game.getRandomWord(0)
@@ -151,10 +151,10 @@ public class WeaverGameTest {
     }
 
     @Nested
-    @DisplayName("游戏设置测试")
+    @DisplayName("Game Setup testing")
     class GameSettingsTests {
         @Test
-        @DisplayName("测试游戏设置标志")
+        @DisplayName("Game Setting Flag Test")
         void testGameFlags() {
             game.setShowErrorMessage(false);
             assertFalse(game.isShowErrorMessage());

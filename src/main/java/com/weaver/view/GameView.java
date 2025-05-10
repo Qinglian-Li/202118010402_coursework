@@ -1,22 +1,22 @@
 package com.weaver.view;
 
 /**
- * 游戏视图接口，定义了视图需要实现的基本方法
+ * Game view interface, which defines the basic methods the view needs to implement
  */
 public interface GameView {
     /**
-     * 更新显示
+     * Update the display
      */
     void updateDisplay();
 
     /**
-     * 显示错误信息
-     * @param message 错误信息
+     * Displaying error messages
+     * @param message Error messages
      */
     void showError(String message);
 
     /**
-     * 显示成功信息
+     * Display success messages
      */
     void showSuccess();
 } 

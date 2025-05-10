@@ -15,7 +15,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 /**
- * 游戏的视图类，负责UI的展示
+ * Game's view class, which is responsible for the presentation of the UI
  */
 public class WeaverView implements GameView {
     private VBox root;
@@ -38,7 +38,7 @@ public class WeaverView implements GameView {
     }
 
     /**
-     * 创建视图组件
+     * Creating a View Component
      */
     private void initialize() {
         root = new VBox(20);
@@ -46,11 +46,11 @@ public class WeaverView implements GameView {
         root.setAlignment(Pos.TOP_CENTER);
         root.setPadding(new Insets(20));
 
-        // 游戏标题
+        // Title of the Game
         Label titleLabel = new Label("Weaver Game");
         titleLabel.getStyleClass().add("game-title");
 
-        // 计时器和得分
+        // Timers and scores
         HBox statsBox = new HBox(20);
         statsBox.setAlignment(Pos.CENTER);
         timerLabel = new Label("Time: 00:00");
@@ -59,7 +59,7 @@ public class WeaverView implements GameView {
         scoreLabel.getStyleClass().add("score");
         statsBox.getChildren().addAll(timerLabel, scoreLabel);
 
-        // 单词显示区域
+        // Word display area
         VBox wordBox = new VBox(10);
         wordBox.setAlignment(Pos.CENTER);
         wordBox.getStyleClass().add("word-display");
@@ -67,48 +67,48 @@ public class WeaverView implements GameView {
         Text targetWord = new Text("TARGET");
         wordBox.getChildren().addAll(startWord, new Text("↓"), targetWord);
 
-        // 输入区域
+        // Input area
         inputField = new TextField();
         inputField.getStyleClass().add("input-field");
-        inputField.setPromptText("输入你的单词...");
+        inputField.setPromptText("Enter your words...");
         inputField.setMaxWidth(300);
 
-        // 历史记录列表
+        // History list
         historyList = new ListView<>();
         historyList.getStyleClass().add("history-list");
         historyList.setMaxHeight(200);
         historyList.setMaxWidth(300);
 
-        // 消息标签
+        // Message label
         messageLabel = new Label();
         messageLabel.setWrapText(true);
         messageLabel.setMaxWidth(300);
 
-        // 虚拟键盘
+        // Virtual keyboard
         createKeyboard();
 
-        // 控制按钮
+        // Control button
         HBox buttonBox = new HBox(10);
         buttonBox.setAlignment(Pos.CENTER);
-        submitButton = new Button("提交");
+        submitButton = new Button("Submit");
         submitButton.getStyleClass().addAll("button", "submit-button");
-        resetButton = new Button("重置游戏");
+        resetButton = new Button("Reset Game");
         resetButton.getStyleClass().addAll("button", "reset-button");
-        newGameButton = new Button("新游戏");
+        newGameButton = new Button("New Game");
         newGameButton.getStyleClass().addAll("button", "new-game-button");
         buttonBox.getChildren().addAll(submitButton, resetButton, newGameButton);
 
-        // 创建标志控制区域
+        // Create the flag control area
         VBox flagsArea = new VBox(5);
         flagsArea.setAlignment(Pos.CENTER);
         flagsArea.setPadding(new Insets(10));
         flagsArea.setStyle("-fx-border-color: #cccccc; -fx-border-radius: 5;");
 
-        showErrorMessageCheckBox = new CheckBox("显示错误信息");
-        showPathCheckBox = new CheckBox("显示路径");
-        useRandomWordsCheckBox = new CheckBox("使用随机单词");
+        showErrorMessageCheckBox = new CheckBox("Display error messages");
+        showPathCheckBox = new CheckBox("Display path");
+        useRandomWordsCheckBox = new CheckBox("Using random words");
 
-        Label flagsLabel = new Label("游戏设置");
+        Label flagsLabel = new Label("Game Settings");
         flagsLabel.setFont(Font.font("System", FontWeight.BOLD, 14));
         
         flagsArea.getChildren().addAll(
@@ -118,7 +118,7 @@ public class WeaverView implements GameView {
             useRandomWordsCheckBox
         );
 
-        // 将所有组件添加到根容器
+        // Add all components to the root container
         root.getChildren().addAll(
             titleLabel,
             statsBox,
@@ -133,7 +133,7 @@ public class WeaverView implements GameView {
     }
 
     /**
-     * 创建虚拟键盘
+     * Creating a virtual keyboard
      */
     private void createKeyboard() {
         keyboard = new GridPane();
@@ -153,22 +153,22 @@ public class WeaverView implements GameView {
                 String key = keyboardLayout[row][col];
                 Button keyButton = new Button(key);
                 keyButton.setStyle(
-                    "-fx-background-color: #404040;" + // 深灰色背景
-                    "-fx-text-fill: white;" +          // 白色文字
-                    "-fx-font-weight: bold;" +         // 粗体
-                    "-fx-min-width: 40px;" +          // 最小宽度
-                    "-fx-min-height: 40px;" +         // 最小高度
-                    "-fx-background-radius: 5px;"      // 圆角
+                    "-fx-background-color: #404040;" + // Dark gray background
+                    "-fx-text-fill: white;" +          // White text
+                    "-fx-font-weight: bold;" +         // Bold type
+                    "-fx-min-width: 40px;" +          // Minimum width
+                    "-fx-min-height: 40px;" +         // Minimum height
+                    "-fx-background-radius: 5px;"      // Rounded corner
                 );
                 
-                // 特殊按键样式
+                // Special button styles
                 if (key.equals("ENTER") || key.equals("⌫")) {
                     keyButton.setStyle(keyButton.getStyle() + 
-                        "-fx-min-width: 60px;"         // 更宽的特殊按键
+                        "-fx-min-width: 60px;"         // Wider special buttons
                     );
                 }
 
-                // 添加按键事件处理
+                // Add keystroke event handling
                 keyButton.setOnAction(e -> {
                     switch (key) {
                         case "ENTER":
@@ -190,7 +190,7 @@ public class WeaverView implements GameView {
                     }
                 });
 
-                // 鼠标悬停效果
+                // Mouseover effect
                 keyButton.setOnMouseEntered(e -> 
                     keyButton.setStyle(keyButton.getStyle() + "-fx-background-color: #505050;")
                 );
@@ -198,7 +198,7 @@ public class WeaverView implements GameView {
                     keyButton.setStyle(keyButton.getStyle() + "-fx-background-color: #404040;")
                 );
 
-                // 点击效果
+                // Click effect
                 keyButton.setOnMousePressed(e -> 
                     keyButton.setStyle(keyButton.getStyle() + "-fx-background-color: #606060;")
                 );
@@ -212,7 +212,7 @@ public class WeaverView implements GameView {
     }
 
     /**
-     * 添加单词到历史记录
+     * Add words to the history
      */
     public void addWordToHistory(String word, boolean[] correctPositions) {
         HBox wordBox = new HBox(5);
@@ -237,7 +237,7 @@ public class WeaverView implements GameView {
 
     @Override
     public void updateDisplay() {
-        // 实现显示更新逻辑
+        // Implement the display update logic
     }
 
     @Override
@@ -250,7 +250,7 @@ public class WeaverView implements GameView {
     @Override
     public void showSuccess() {
         messageLabel.getStyleClass().setAll("success-message");
-        messageLabel.setText("恭喜你赢得了游戏！");
+        messageLabel.setText("Congratulations on winning the game!");
         playVictoryAnimation();
     }
 

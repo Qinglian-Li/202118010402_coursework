@@ -7,7 +7,8 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 /**
- * WeaverGame类是游戏的核心模型类，实现了单词变换游戏的主要逻辑
+ * WeaverGame class is the core model class of the game
+ * and implements the main logic of the word change game
  */
 public class WeaverGame {
     private String startWord;
@@ -19,14 +20,14 @@ public class WeaverGame {
     private boolean useRandomWords;
 
     /**
-     * 构造函数
-     * @param dictionaryPath 字典文件的路径
+     * Constructors
+     * @param dictionaryPath Path to the dictionary file
      */
     public WeaverGame(String dictionaryPath) {
-        assert dictionaryPath != null && !dictionaryPath.isEmpty() : "字典文件路径不能为空";
+        assert dictionaryPath != null && !dictionaryPath.isEmpty() : "Dictionary file path cannot be empty";
         
         this.dictionary = loadDictionary(dictionaryPath);
-        assert !dictionary.isEmpty() : "字典不能为空";
+        assert !dictionary.isEmpty() : "Dictionary cannot be empty";
         
         this.gameHistory = new ArrayList<>();
         this.showErrorMessage = true;
@@ -35,9 +36,9 @@ public class WeaverGame {
     }
 
     /**
-     * 加载字典文件
-     * @param path 字典文件路径
-     * @return 包含所有有效单词的Set
+     * Loading dictionary file
+     * @param path Dictionary file path
+     * @return Set of all valid words
      */
     private Set<String> loadDictionary(String path) {
         Set<String> words = new HashSet<>();
@@ -55,15 +56,15 @@ public class WeaverGame {
     }
 
     /**
-     * 初始化游戏
-     * @param start 起始单词
-     * @param target 目标单词
+     * Initializing Game
+     * @param start Start Word
+     * @param target Target Word
      */
     public void initializeGame(String start, String target) {
-        assert start != null && target != null : "起始词和目标词不能为空";
-        assert start.length() == target.length() : "起始词和目标词长度必须相同";
-        assert dictionary.contains(start.toLowerCase()) : "起始词必须在字典中";
-        assert dictionary.contains(target.toLowerCase()) : "目标词必须在字典中";
+        assert start != null && target != null : "The start and target words cannot be null";
+        assert start.length() == target.length() : "The start and target words must be the same length";
+        assert dictionary.contains(start.toLowerCase()) : "The starting word must be in the dictionary";
+        assert dictionary.contains(target.toLowerCase()) : "The target word must be in the dictionary";
 
         this.startWord = start.toLowerCase();
         this.targetWord = target.toLowerCase();
@@ -72,22 +73,22 @@ public class WeaverGame {
     }
 
     /**
-     * 尝试一个新单词
-     * @param word 玩家输入的单词
-     * @return 是否是有效的移动
+     * Try a new word
+     * @param word Word entered by the player
+     * @return If a valid move
      */
     public boolean tryWord(String word) {
-        assert word != null : "输入单词不能为空";
-        assert !gameHistory.isEmpty() : "游戏历史不能为空";
+        assert word != null : "The input word cannot be empty";
+        assert !gameHistory.isEmpty() : "The game history cannot be empty";
         
         word = word.toLowerCase();
         
-        // 检查单词长度是否正确
+        // Check that the word length is correct
         if (word.length() != startWord.length()) {
             return false;
         }
 
-        // 检查是否只改变了一个字母
+        // Check if only one letter has changed
         String lastWord = gameHistory.get(gameHistory.size() - 1);
         int differences = 0;
         for (int i = 0; i < word.length(); i++) {
@@ -99,39 +100,39 @@ public class WeaverGame {
             return false;
         }
 
-        // 检查是否是有效单词
+        // Checks if it's a valid word
         if (!dictionary.contains(word)) {
             return false;
         }
 
-        // 添加到历史记录
+        // Add to history
         gameHistory.add(word);
         return true;
     }
 
     /**
-     * 检查游戏是否获胜
-     * @return 是否获胜
+     * Check if the game is won
+     * @return If win
      */
     public boolean hasWon() {
-        assert !gameHistory.isEmpty() : "游戏历史不能为空";
+        assert !gameHistory.isEmpty() : "The game history cannot be empty";
         return gameHistory.get(gameHistory.size() - 1).equals(targetWord);
     }
 
     /**
-     * 从字典中随机选择一个单词
-     * @param length 单词长度
-     * @return 随机单词
+     * Choose a random word from the dictionary
+     * @param length Word length
+     * @return Random word
      */
     public String getRandomWord(int length) {
-        assert length > 0 : "单词长度必须大于0";
-        assert !dictionary.isEmpty() : "字典不能为空";
+        assert length > 0 : "Word length must be greater than 0";
+        assert !dictionary.isEmpty() : "Dictionary cannot be empty";
 
         List<String> wordsOfLength = dictionary.stream()
                 .filter(word -> word.length() == length)
                 .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
         
-        assert !wordsOfLength.isEmpty() : "没有找到指定长度的单词";
+        assert !wordsOfLength.isEmpty() : "No word of the specified length was found";
         
         Random random = new Random();
         return wordsOfLength.get(random.nextInt(wordsOfLength.size()));
@@ -139,17 +140,17 @@ public class WeaverGame {
 
     // Getters and setters with assertions
     public String getStartWord() {
-        assert startWord != null : "起始词未初始化";
+        assert startWord != null : "Start word is uninitialized";
         return startWord;
     }
 
     public String getTargetWord() {
-        assert targetWord != null : "目标词未初始化";
+        assert targetWord != null : "Target word is uninitialized";
         return targetWord;
     }
 
     public List<String> getGameHistory() {
-        assert gameHistory != null : "游戏历史未初始化";
+        assert gameHistory != null : "Game history is uninitialized";
         return new ArrayList<>(gameHistory);
     }
 

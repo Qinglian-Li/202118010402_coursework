@@ -8,28 +8,28 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * GUI版本的主应用程序类
+ * The main application class of the GUI version
  */
 public class WeaverGuiApplication extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        // 创建模型
+        // Create Model
         WeaverGame model = new WeaverGame("dictionary.txt");
         
-        // 创建视图
+        // Create View
         WeaverView view = new WeaverView();
         
-        // 创建控制器
+        // Create Controller
         WeaverController controller = new WeaverController(model, view);
         
-        // 设置场景
+        // Set Scene
         Scene scene = new Scene(view.getRoot(), 800, 600);
         primaryStage.setTitle("Weaver Game");
         primaryStage.setScene(scene);
         primaryStage.show();
         
-        // 初始化游戏
+        // Initializing the game
         if (model.isUseRandomWords()) {
             String startWord = model.getRandomWord(4);
             String targetWord = model.getRandomWord(4);
