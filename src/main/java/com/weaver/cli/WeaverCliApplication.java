@@ -27,7 +27,8 @@ public class WeaverCliApplication {
             String targetWord = game.getRandomWord(4);
             game.initializeGame(startWord, targetWord);
         } else {
-            game.initializeGame("SOUL", "MATE");
+            //game.initializeGame("SOUL", "MATE");
+            game.initializeGame("FISH", "BIRD");
         }
 
         // Display the initial state
